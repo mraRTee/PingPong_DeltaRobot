@@ -1,5 +1,5 @@
 /*
- * toroldki.c
+ * deltarobot_servo.c
  *
  * Created: 2020. 03. 13. 19:05:18
  * Author : RozaTamas
@@ -26,27 +26,16 @@ int main(void)
 	DDRG=0;
 	TCCR1A=0;
 	TCCR1B=0b1011;
-	OCR1A=2490;	//2490 - 20 ms-es kör
+	OCR1A=2490;	//2490 - 20 ms-es kÃ¶r
 	TIMSK=0b00010001;
 	
 	
 	USART_Init(MYUBRR);
 				
 	while(1){
-		
-	/*	
-		if(seged2>5400){
-			
-			cli();
-			seged2=0;
-			atvett_adat1=atvett_adat2=atvett_adat3=0;
-			szog1=0;
-			seged1=0;
-			count1=0;
-		}*/
 		if(count1<7){
 		USART_Receive();
-		seged1=RXC;			//RXC ha bebillen akkor van fogadás
+		seged1=RXC;			//RXC ha bebillen akkor van fogadÃ¡s
 		if(seged1!=0)
 		{	
 			count1++;
@@ -99,36 +88,4 @@ ISR(TIMER1_COMPA_vect)
 	PORTB=0;
 	
 	}
-	
-	
-	
-	/*
-	if(PING==1) ford[0]=10;
-	if(PING==2) ford[0]=20;
-	if(PING==4) ford[0]=30; 
-	if(ford[0]==10)
-	{
-		for(int i=0;i<1000;i++)		// 1000 = +90°
-		{
-			PORTB=1;
-		}
-		PORTB=0;
-	}
-	if(ford[0]==20)
-	{
-		for(int i=0;i<2575;i++)		// 2575 = NULL
-		{
-			PORTB=1;
-		}
-		PORTB=0;
-	}
-	if(ford[0]==30)
-	{
-		for(int i=0;i<4150;i++)		// 4150 = -90°
-		{
-			PORTB=1;
-		}
-		PORTB=0;
-	}
-*/
 }
