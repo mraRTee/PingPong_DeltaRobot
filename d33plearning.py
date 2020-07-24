@@ -30,7 +30,7 @@ cn_2 = 0
 cim1 = ""
 txt = ".txt"
 e = 0
-
+g = 0
 
 def plot():
     # AZ EGÉSZET PLOTTOLJA KI MOST!!!!!!!!!!!!!!!!!!!!!
@@ -48,8 +48,11 @@ while 1:  # folyamatosan veszi a jelet
         hsv1 = cv2.cvtColor(vid1, cv2.COLOR_BGR2HSV)  # ez itt a konverzió
         hsv2 = cv2.cvtColor(vid2, cv2.COLOR_BGR2HSV)  # ez itt a konverzió
     except:
-        with open("x.txt", 'w+') as f:
-            for item in listx_felso:
+        with open("x_felső_full.txt", 'w+') as f:
+            for item in list_kiirx_f:
+                f.write("%s\n" % item)
+        with open("y_felső_full.txt", 'w+') as f:
+            for item in list_kiiry_f:
                 f.write("%s\n" % item)
         plot()
     lower_orange1 = np.array([0, 110, 110])
@@ -117,94 +120,113 @@ while 1:  # folyamatosan veszi a jelet
     kd_a = str(kd_a)
     kd_b = str(kd_b)
     for i in range(15):
+        # ha nincs külön minden if-re egy try akkor csak akkor fog működni, ha a fenti kamera detektál,
+        # lehet az még hasznos lehet
         try:
             if kd_a[i] == ' ' and kd1 and not x_a:
                 x_a = kd1
                 x_a = int(x_a)
                 kd1 = ""
+        except:
+            pass
+        try:
             if kd_a[i] == ' ' and kd1 and x_a:
                 y_a = kd1
                 y_a = int(y_a)
                 kd1 = ""
-            if kd_a[i] == '0' or kd_a[i] == '1' or kd_a[i] == '2' or kd_a[i] == '3' or kd_a[i] == '4' or kd_a[i] == '5' or kd_a[
-                i] == '6' \
-                    or kd_a[i] == '7' or kd_a[i] == '8' or kd_a[i] == '9':
+        except:
+            pass
+        try:
+            if kd_a[i] == '0' or kd_a[i] == '1' or kd_a[i] == '2' or kd_a[i] == '3' or kd_a[i] == '4' or kd_a[i] == '5'\
+                    or kd_a[i] == '6' or kd_a[i] == '7' or kd_a[i] == '8' or kd_a[i] == '9':
                 kd1 += kd_a[i]
-            # cv2.line(vid1, (int(y_a), int(x_a)), (int(y_a), int(x_a)), (0, 0, 255), 10)
+        except:
+            pass
+        try:
             if kd_b[i] == ' ' and kd2 and not x_b:
                 x_b = kd2
                 x_b = int(x_b)
                 kd2 = ""
+        except:
+            pass
+        try:
             if kd_b[i] == ' ' and kd2 and x_b:
                 y_b = kd2
                 y_b = int(y_b)
                 kd2 = ""
-            if kd_b[i] == '0' or kd_b[i] == '1' or kd_b[i] == '2' or kd_b[i] == '3' or kd_b[i] == '4' or kd_b[i] == '5' or kd_b[
-                i] == '6' \
-                    or kd_b[i] == '7' or kd_b[i] == '8' or kd_b[i] == '9':
-                kd2 += kd_b[i]
-            # cv2.line(vid2, (int(y_b), int(x_b)), (int(y_b), int(x_b)), (0, 0, 255), 10)
         except:
-            continue
+            pass
+        try:
+            if kd_b[i] == '0' or kd_b[i] == '1' or kd_b[i] == '2' or kd_b[i] == '3' or kd_b[i] == '4' or kd_b[i] == '5'\
+                    or kd_b[i] == '6' or kd_b[i] == '7' or kd_b[i] == '8' or kd_b[i] == '9':
+                kd2 += kd_b[i]
+        except:
+            pass
     kd1 = ""
     kd2 = ""
-    # if x_a != 0 and y_a != 0 and s_1 is False:
-    #     listx_felso.append(int(x_a))
-    #     listy_felso.append(int(y_a))
-    #     list_kiirx_f.append(int(x_a))
-    #     list_kiiry_f.append(int(y_a))
-    #     if cn_1 > 2:
-    #         try:
-    #             if listy_felso[cn_1] > listy_felso[cn_1 - 1]:
-    #                 del listy_felso[-1]
-    #                 del listx_felso[-1]
-    #                 cim1 = str(e)+ "x_felso" + txt
-    #                 with open(cim1, 'w+') as f:
-    #                     for item in listx_felso:
-    #                         f.write("%s\n" % item)
-    #                 cim1 = str(e) + "y_felso" + txt
-    #                 with open(cim1, 'w+') as f:
-    #                     for item in listy_felso:
-    #                         f.write("%s\n" % item)
-    #                 e += 1
-    #                 s_1 = True
-    #         except:
-    #             cn_1 -= 1
-    #     cn_1 += 1
-    #
-    # if x_a == 0 and y_a == 0 and s_1:
-    #     print(listx_felso)
-    #     print(listy_felso)
-    #     listx_felso = []
-    #     listy_felso = []
-    #     s_1 = False
-    #
+    if x_a != 0 and y_a != 0 and s_1 is False:
+        listx_felso.append(int(x_a))
+        listy_felso.append(int(y_a))
+
+        if cn_1 > 2:
+            try:
+                if listy_felso[cn_1] > listy_felso[cn_1 - 1]:
+                    del listy_felso[-1]
+                    del listx_felso[-1]
+                    cim1 = str(e)+ "x_felso" + txt
+                    with open(cim1, 'w+') as f:
+                        for item in listx_felso:
+                            f.write("%s\n" % item)
+                    cim1 = str(e) + "y_felso" + txt
+                    with open(cim1, 'w+') as f:
+                        for item in listy_felso:
+                            f.write("%s\n" % item)
+                    e += 1
+                    s_1 = True
+            except:
+                cn_1 -= 1
+        cn_1 += 1
+
+    if x_a == 0 and y_a == 0 and s_1:
+        print("x felső: ", listx_felso)
+        print("y felső: ", listy_felso)
+        list_kiirx_f+=listx_felso
+        list_kiiry_f+=listy_felso
+        listx_felso = []
+        listy_felso = []
+        s_1 = False
+
     # if x_b != 0 and y_b != 0 and s_2 is False:
     #     listx_also.append(int(x_b))
     #     listy_also.append(int(y_b))
-    #     list_kiirx_l.append(int(x_b))
-    #     list_kiiry_l.append(int(y_b))
-
+    #     # list_kiirx_l.append(int(x_b))
+    #     # list_kiiry_l.append(int(y_b))
     #
     #     if cn_2 > 2:
     #         try:
-    #             if listy_2[cn_2] > listy_2[cn_2 - 1]:
-    #                 del listy_2[-1]
-    #                 del listx_2[-1]
-    #                 print(listy_2)
-    #                 print(listx_2)
-    #
-    #                 # with open('x.txt', 'a+') as f:
-    #                 #     for item in listx:
-    #                 #         f.write("%s\n" % item)
-    #                 # with open('y.txt', 'a+') as f:
-    #                 #     for item in listy:
-    #                 #         f.write("%s\n" % item)
+    #             if listy_also[cn_2] > listy_also[cn_2 - 1]:
+    #                 del listy_also[-1]
+    #                 del listx_also[-1]
+    #                 cim1 = str(g)+ "x_also" + txt
+    #                 with open(cim1, 'w+') as f:
+    #                     for item in listx_felso:
+    #                         f.write("%s\n" % item)
+    #                 cim1 = str(g) + "y_also" + txt
+    #                 with open(cim1, 'w+') as f:
+    #                     for item in listy_felso:
+    #                         f.write("%s\n" % item)
+    #                 g += 1
     #                 s_2 = True
     #         except:
     #             cn_2 -= 1
     #     cn_2 += 1
     # if x_b == 0 and y_b == 0 and s_2:
+    #     print("x alsó: ", listx_also)
+    #     print("y alsó: ", listy_also)
+    #     list_kiirx_l+=listx_also
+    #     list_kiiry_l+=listy_also
+    #     listx_also = []
+    #     listy_also = []
     #     s_2 = False
 
 
