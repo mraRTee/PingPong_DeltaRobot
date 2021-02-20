@@ -5,15 +5,22 @@ import matplotlib.pyplot as plt
 import serial
 from sklearn.metrics import r2_score
 import math
+from datetime import datetime
+from openpyxl import Workbook
 
-ser = serial.Serial(
-        port='COM3',
-        baudrate=115200,
-        parity=serial.PARITY_NONE,
-        stopbits=serial.STOPBITS_ONE,
-        bytesize=serial.EIGHTBITS,
-        timeout=1
-    )
+book = Workbook()
+sheet = book.active
+row=1
+column=1
+# ser = serial.Serial(
+#         port='COM3',
+#         baudrate=115200,
+#         parity=serial.PARITY_NONE,
+#         stopbits=serial.STOPBITS_ONE,
+#         bytesize=serial.EIGHTBITS,
+#         timeout=1
+#     )
+
 
 listy_felso = []
 listx_felso = []
@@ -191,9 +198,16 @@ def regress_felso(listx_felso,listy_felso):
         send_string_3="0"+str(round(atkuld_ertek[3]))
 
     print("Fenti adat 1:", send_string_1)
-    # print("Fenti adat 2:",send_string_2)
-    # print("Fenti adat 3:",send_string_3)
-    kuldes(send_string_1+send_string_2+send_string_3)
+    print("Fenti adat 2:",send_string_2)
+    print("Fenti adat 3:",send_string_3)
+    # uj=datetime.now()
+    # uj=str(uj)
+    # uj = uj[17:25]
+    # print(uj)
+    # row=2
+    # sheet.cell(row, column).value = uj
+    # book.save('idomeres.xlsx')
+    # kuldes(send_string_1+send_string_2+send_string_3)
 
 def real_koordinatak(z_also,x_also,x_felso,y_felso):
     real_z=origo_z+((z_kozepe_also-z_also)*szorzo_also)
@@ -244,10 +258,20 @@ def real_koordinatak(z_also,x_also,x_felso,y_felso):
         send_string_3="0"+str(round(atkuld_ertek[3]))
 
     print("Lenti adat 1:", send_string_1)
-    # print("Lenti adat 2:", send_string_2)
-    # print("Lenti adat 3:", send_string_3)
+    print("Lenti adat 2:", send_string_2)
+    print("Lenti adat 3:", send_string_3)
+    # uj = datetime.now()
+    # uj = str(uj)
+    # uj=uj[17:25]
+    # print(uj)
+    # global column
+    # row=3
+    # sheet.cell(row, column).value = uj
+    # column+=1
+    # book.save('idomeres.xlsx')
     print("\n")
-    kuldes(send_string_1+send_string_2+send_string_3)
+    # kuldes(send_string_1+send_string_2+send_string_3)
+    # print(uj)
 
 cap1 = cv2.VideoCapture("17_f.mp4")
 cap2 = cv2.VideoCapture("17_l.mp4")
@@ -282,6 +306,11 @@ def plot():
 
 
 while 1:  # folyamatosan veszi a jelet
+    #időmérés
+    global ido
+    ido=datetime.now()
+
+
     _, vid1 = cap1.read()  # minden kockát olvas
     _, vid2 = cap2.read()  # minden kockát olvas
     try:
@@ -433,6 +462,12 @@ while 1:  # folyamatosan veszi a jelet
             # plot()
             # print(listx_felso)
             # print(listy_felso)
+            # ido=str(ido)
+            # ido=ido[17:25]
+            # print(ido)
+            # row = 1
+            # sheet.cell(row, column).value = ido
+            # book.save('idomeres.xlsx')
             regress_felso(listx_felso,listy_felso)
         if cn_1 > 0 and listx_felso[cn_1] > listx_felso[cn_1-1]:
             # plot()
